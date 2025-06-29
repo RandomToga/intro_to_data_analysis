@@ -14,6 +14,7 @@ orders = pd.read_csv('orders.csv', sep = ',')
 orders = orders.drop('Unnamed: 7', axis=1) #удаляю последние 2 пустых столбца
 orders = orders.drop('Unnamed: 8', axis=1)
 #заменяем запятые на точки и конвертируем в float
+#(до этого объектов типа float64 было 0, т.к. в таблице данные записаны через запятую и поэтому становятся типа object)
 for col in ['successful_orders', 'fail_orders']:
     orders[col] = orders[col].str.replace(',', '.').astype('float64')
 for dtype in ['int','object']: #смотрю сколько памяти занимает датасет
@@ -35,8 +36,8 @@ print([(col, orders[col].nunique()) for col in orders.columns])
 ('fail_orders', 42)]"""
 #ответ на вопрос 1: 4
 
-print(orders[orders['spec'] == 'Рыба']['date'].count()) #считаем количество ресторанов со специализацией рыба
-#ответ на вопрос 2: 1103
+print(orders[orders['spec'] == 'Рыба']['vendor_id'].nunique()) #считаем количество ресторанов со специализацией рыба
+#ответ на вопрос 2: 18
 
 print(orders.info())
 """
@@ -55,11 +56,11 @@ Data columns (total 7 columns):
 dtypes: float64(2), int64(3), object(2)
 memory usage: 5.1+ MB
 None"""
-#ответ на вопрос 3: 2
+#ответ на вопрос 3: 0 (т.к. мы сами поменяли последние 2 столбца на float64)
 
 #Фильтруем по vendor_id И successful_orders < 20
 filtered_orders = orders[(orders['vendor_id'] == 40065) & (orders['successful_orders'] < 20)]
 print(filtered_orders['date'].count()) #считаем количество строк (дней)
 #ответ на вопрос 4: 45
 
-#ответ: 4, 1103, 2, 45 
+#ответ: 4, 18, 0, 45 
