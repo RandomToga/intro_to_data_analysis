@@ -1,11 +1,10 @@
-#У какого продукта наибольшее количество продаж за весь период?
-#Чему равна общая выручка с точностью до одного знака после запятой?
+#У какого продукта наибольшее количество продаж за весь период? HFvpNNVhmAUgDZ
+#Чему равна общая выручка с точностью до одного знака после запятой? 145545.4
 
 import sqlite3
 import pandas as pd
 #print(sqlite3.sqlite_version)
 connection = sqlite3.connect('my_online_store.db')
-cursor = connection.cursor()
 query1 = """SELECT 
                 p.product_name,           -- Выбрать название продукта (из таблицы products)
                 SUM(o.quantity) as total_sales  -- Посчитать сумму quantity (количества продаж) и назвать столбец "total_sales"
@@ -24,9 +23,10 @@ print(ans1)
 #product_name  total_sales
 #HFvpNNVhmAUgDZ      21
 query2 = """SELECT
-                SUM(total_price)
+                ROUND(SUM(total_price), 1) AS total_revenue
             FROM
                 orders"""
 ans2 = pd.read_sql_query(query2, connection)
+print()
 print(ans2)
-print(round(145545.39, 1))
+connection.close()
